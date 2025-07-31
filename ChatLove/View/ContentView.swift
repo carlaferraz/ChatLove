@@ -13,6 +13,7 @@ struct ContentView: View{
     @EnvironmentObject var storyManager: StoryManager
     
     @StateObject var chatController: ChatController = .init()
+    
     @State var string: String = ""
     
     @State var isFocused: Bool
@@ -145,14 +146,38 @@ struct ContentView: View{
                 // adicionar botoes pra escolhas
                 VStack {
                     ForEach(storyNode.choices) { choice in
-                        Text(choice.textUser)
+                        HStack{
+                            Text(choice.textUser)
+                                .foregroundStyle(.white)
+                                .font(.system(size: 16))
+                                .fontWeight(.medium)
+                            Spacer()
+                            Button{
+                                chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
+                                storyManager.currentGameState = .free
+                            } label: {
+                                Image(systemName: "arrow.up")
+                                    .font(.system(size: 17))
+                                    .fontWeight(.bold)
+                                    .padding(10)
+                                    .foregroundStyle(.black)
+                                    .background(.white)
+                                    .cornerRadius(30)
+                            }
+                        }
+                        .padding(.vertical, 6)
+                        .padding(.leading, 24)
+                        .padding(.trailing, 10)
+                        .background(.textFieldBox)
+                        .cornerRadius(30)
+                        
                     }
                     
-                    if isFocused {
-                        focusedInput
-                    } else {
-                        unfocusedInput
-                    }
+//                    if isFocused {
+//                        focusedInput
+//                    } else {
+//                        unfocusedInput
+//                    }
                 }
             case .free:
                 // INPUT DIFERENCIADO

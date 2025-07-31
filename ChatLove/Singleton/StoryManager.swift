@@ -25,7 +25,7 @@ final class StoryManager: ObservableObject {
         case free
     }
     
-    @Published private(set) var currentGameState: GameState = .free
+    @Published var currentGameState: GameState = .free
     
     private(set) var tradedMessages = 0
     private var currentStoryNode: StoryDestination?
