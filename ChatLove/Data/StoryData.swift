@@ -17,6 +17,7 @@ struct StoryNode: Identifiable{
     let id = UUID()
     let textBot: String
     let choices: [Choice]
+    let textBotReply: String
 }
 
 enum StoryDestination: String, Hashable {

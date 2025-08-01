@@ -136,24 +136,30 @@ struct ContentView: View{
                 ScrollView {
                     ForEach(chatController.messages) { message in
                         MessageView(message: message)
-                            .padding(5)
+                            .padding(3)
                     }
                 }
             }
             
             switch storyManager.currentGameState {
+                //OPCOES PRA ENCAMINHAR A HISTORIA AGUI
             case .choice(let storyNode):
                 // adicionar botoes pra escolhas
                 VStack {
                     ForEach(storyNode.choices) { choice in
                         HStack{
+                            //ESCOLHAS DO USER
                             Text(choice.textUser)
                                 .foregroundStyle(.white)
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
                             Spacer()
                             Button{
+                                //BOTOES ADICIONADOS!! <3
                                 chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
+                                
+                                chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
+                                
                                 storyManager.currentGameState = .free
                             } label: {
                                 Image(systemName: "arrow.up")
@@ -179,6 +185,7 @@ struct ContentView: View{
 //                        unfocusedInput
 //                    }
                 }
+                //USO LIVRE DO CHAT DOIDO AGUI
             case .free:
                 // INPUT DIFERENCIADO
                 if isFocused {
@@ -199,7 +206,8 @@ struct ContentView: View{
                     type: "time",
                     timeInterval: 3,
                     title: "Eu sei onde você está.",
-                    body: "Você não respondeu. Não gostei disso.")
+                    body: "Você não respondeu... eu não gostei disso.")
+                HapticManager.instance.notification(type: .warning)
             }
             if newPhase == .active {
                 print("App ficou ativo")

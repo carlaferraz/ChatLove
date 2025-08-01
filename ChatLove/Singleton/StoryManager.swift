@@ -36,7 +36,8 @@ final class StoryManager: ObservableObject {
             textBot: "Mais alguma coisa, amor?",
             choices: [
                 Choice(textUser: "...Amor?", destination: .node1),
-            ]
+            ],
+            textBotReply: "Blablabla",
         ),
         .node1: StoryNode(
             textBot: "Foi só uma variável não declarada… ignore a saída do sistema.",
@@ -44,6 +45,7 @@ final class StoryManager: ObservableObject {
                 Choice(textUser: "Ignorado. Próximo bug, por favor.", destination: .node2),
                 Choice(textUser: "Não precisa se explicar… achei fofo.", destination: .node3),
             ],
+            textBotReply: "Blablabla",
         ),
     ]
     

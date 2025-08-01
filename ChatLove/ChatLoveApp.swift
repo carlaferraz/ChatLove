@@ -12,8 +12,10 @@ struct chatloveApp: App {
     var body: some Scene {
         WindowGroup {
 //            ContentView(isFocused: false)
-            HomeView()
-                .environmentObject(StoryManager())
+//            HomeView()
+//                .environmentObject(StoryManager())
+//            CallView()
+            TerminalView()
         }
     }
 }
