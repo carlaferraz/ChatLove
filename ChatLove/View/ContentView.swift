@@ -50,7 +50,6 @@ struct ContentView: View{
                     case .free:
                         chatController.sendNewMessage(content: string)
                     }
-                    
                     string = ""
                     isFocused = false
                 } label: {
