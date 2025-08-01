@@ -172,7 +172,12 @@ struct ContentView: View{
 //                                storyManager.currentGameState = .free
                                 chatController.messages.append(.init(content: choice.textUser, isUser: true))
                                 chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
-                                storyManager.processUserChoice(choice)
+                                
+                                storyManager.currentGameState = .free
+                                
+                                //storyManagar.checkScenario()
+                                
+//                                storyManager.processUserChoice(choice)
                                 
 
                             } label: {

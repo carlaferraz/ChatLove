@@ -10,17 +10,13 @@ import SwiftUI
 final class StoryManager: ObservableObject {
     
     func processUserChoice(_ choice: Choice) {
-        // Primeiro, adicionamos a mensagem do usuário
-        // chatController.messages.append(Message(content: choice.textUser, isUser: true))
-        
-        // Depois, verificamos para onde a escolha leva
         switch choice.destination {
         case .nodeRomance3:
             currentGameState = .transitionTo(view: .romanceEnding)
         case .nodeSombria3:
             currentGameState = .transitionTo(view: .darkEnding)
         default:
-            // Se não for um final, atualiza para a próxima escolha de história
+            // aqui
             guard let nextNode = story[choice.destination] else { return }
             currentGameState = .choice(storyNode: nextNode)
         }
@@ -51,11 +47,9 @@ final class StoryManager: ObservableObject {
             case 18:
                 currentGameState = .choice(storyNode: story[.nodeRomance3]!)
             default:
-                // Se o número de mensagens não atingiu um ponto de virada,
-                // o estado continua como 'free'
                 currentGameState = .free
             }
-        
+                
     }
     
     enum GameState {
