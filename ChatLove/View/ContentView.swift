@@ -40,16 +40,25 @@ struct ContentView: View{
                 Spacer()
                 Button {
                     storyManager.increaseTradedMessages()
+                    chatController.sendNewMessage(content: string)
+//                    switch storyManager.currentGameState {
+//                    case .choice(let storyNode):
+//                        chatController.sendNewMessage(
+//                            content: string,
+//                            predefinedAnswer: storyNode.textBot
+//                        )
+//                    case .free:
+//                        chatController.sendNewMessage(content: string)
+//                        
+//                    case .transitionTo(let view):
+//                        switch view {
+//                        case .romanceEnding:
+//                            TerminalView()
+//                        case .darkEnding:
+//                            TerminalView()
+//                        }
+//                    }
                     
-                    switch storyManager.currentGameState {
-                    case .choice(let storyNode):
-                        chatController.sendNewMessage(
-                            content: string,
-                            predefinedAnswer: storyNode.textBot
-                        )
-                    case .free:
-                        chatController.sendNewMessage(content: string)
-                    }
                     
                     string = ""
                     isFocused = false
@@ -156,11 +165,16 @@ struct ContentView: View{
                             Spacer()
                             Button{
                                 //BOTOES ADICIONADOS!! <3
-                                chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
-                                
+//                                chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
+//                                
+//                                chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
+//                                
+//                                storyManager.currentGameState = .free
+                                chatController.messages.append(.init(content: choice.textUser, isUser: true))
                                 chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
+                                storyManager.processUserChoice(choice)
                                 
-                                storyManager.currentGameState = .free
+
                             } label: {
                                 Image(systemName: "arrow.up")
                                     .font(.system(size: 17))
@@ -193,6 +207,17 @@ struct ContentView: View{
                 } else {
                     unfocusedInput
                 }
+                
+            case .transitionTo(let view):
+                // Transição para a nova view (você já fez isso corretamente).
+                // A sua ContentView precisa estar dentro de um `NavigationStack` ou `ZStack` para isso funcionar.
+                switch view {
+                case .romanceEnding:
+                    TerminalView() // Você precisa criar esta view
+                case .darkEnding:
+                    TerminalView() // Você precisa criar esta view
+                }
+                
             }
         }
         .padding(12)

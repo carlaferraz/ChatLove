@@ -22,8 +22,13 @@ struct StoryNode: Identifiable{
 
 enum StoryDestination: String, Hashable {
     case start
-    case node1
-    case node2
-    case node3
-    case node4
+    case nodeTomRelacao
+    case nodeConhecer
+    case nodeRomance1
+    case nodeRomance2
+    case nodeRomance3
+    case nodeApagar
+    case nodeSombria1
+    case nodeSombria2
+    case nodeSombria3
 }
