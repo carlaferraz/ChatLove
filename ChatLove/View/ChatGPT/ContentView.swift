@@ -7,6 +7,7 @@
 
 import SwiftUI
 import OpenAI
+import PhotosUI
 
 struct ContentView: View{
     
@@ -24,6 +25,9 @@ struct ContentView: View{
     @State private var shouldGoToTerminalView = false
     @State private var shouldGoToCallView = false
     
+    @State private var showingCamera = false //controla a camera
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var selectedImage: UIImage?
     
     
     let notify = NotificationHandler()
@@ -123,27 +127,12 @@ struct ContentView: View{
     var body: some View {
         VStack{
             
-            //header
-            HStack{
-                Image(systemName: "text.alignleft")
-                Spacer()
-                Text("ChatGPT")
-                Spacer()
-                Image(systemName: "square.and.pencil")
-            }
-            .font(.system(size: 20))
-            .fontWeight(.bold)
-            .padding(.bottom, 50)
+            ChatHeaderView()
             Spacer()
             
             
             VStack(spacing: 35){
-                ScrollView {
-                    ForEach(chatController.messages) { message in
-                        MessageView(message: message)
-                            .padding(3)
-                    }
-                }
+                MessageListView(chatController: chatController)
             }
             
             switch storyManager.currentGameState {
@@ -158,63 +147,9 @@ struct ContentView: View{
                             storyManager: storyManager,
                             chatController: chatController,
                             shouldGoToTerminalView: $shouldGoToTerminalView,
-                            shouldGoToCallView: $shouldGoToCallView
+                            shouldGoToCallView: $shouldGoToCallView,
+                            showingCamera: $showingCamera
                         )
-                        //                        HStack{
-                        //                            //ESCOLHAS DO USER
-                        //                            Text(choice.textUser)
-                        //                                .foregroundStyle(.white)
-                        //                                .font(.system(size: 16))
-                        //                                .fontWeight(.medium)
-                        //                            Spacer()
-                        //                            Button {
-                        //                                if choice.destination == .nodeRomance3 {
-                        //                                    shouldGoToTerminalView = true
-                        //                                    return
-                        //                                }
-                        //
-                        //                                if choice.destination == .nodeSombria3 {
-                        //                                    shouldGoToTerminalView = true
-                        //                                    return
-                        //                                }
-                        //
-                        //                                if choice.destination == .nodeRomance1 {
-                        //                                    shouldGoToCallView = true
-                        //                                    return
-                        //                                }
-                        //
-                        //                                if choice.destination == .nodeChat {
-                        //                                    storyManager.tradedMessages = -99 // gambiurra kkkka
-                        //                                    storyManager.currentGameState = .free
-                        //                                    return
-                        //                                }
-                        //
-                        //                                //BOTOES ADICIONADOS!! <3
-                        //                                chatController.messages.append(
-                        //                                    .init(content: storyNode.textBot, isUser: false)
-                        //                                )
-                        //
-                        //                                chatController.messages.append(
-                        //                                    .init(content: choice.textUser, isUser: true)
-                        //                                )
-                        //
-                        //                                chatController.messages.append(
-                        //                                    .init(content: storyNode.textBotReply, isUser: false)
-                        //                                )
-                        //
-                        //                                storyManager.increaseTradedMessages(choice: choice)
-                        //
-                        //                                //storyManager.currentGameState = .free
-                        //                            } label: {
-                        //                                Image(systemName: "arrow.up")
-                        //                                    .font(.system(size: 17))
-                        //                                    .fontWeight(.bold)
-                        //                                    .padding(10)
-                        //                                    .foregroundStyle(.black)
-                        //                                    .background(.white)
-                        //                                    .cornerRadius(30)
-                        //                            }
-                        //                        }
                         .padding(.vertical, 6)
                         .padding(.leading, 24)
                         .padding(.trailing, 10)
@@ -222,12 +157,6 @@ struct ContentView: View{
                         .cornerRadius(30)
                         
                     }
-                    
-                    //                    if isFocused {
-                    //                        focusedInput
-                    //                    } else {
-                    //                        unfocusedInput
-                    //                    }
                 }
                 //USO LIVRE DO CHAT DOIDO AGUI
             case .free:
@@ -266,6 +195,21 @@ struct ContentView: View{
             isPresented: $shouldGoToCallView,
             destination: { CallView() }
         )
+        
+        .sheet(isPresented: $showingCamera){
+            CameraView(image: $selectedImage)
+        }
+        
+        .onChange(of: selectedImage) { _, newImage in
+            if let newImage = newImage{
+                chatController.sendImageMessage(image: newImage)
+                
+                storyManager.advanceStoryAfterPhoto()
+                
+                selectedImage = nil
+                selectedItem = nil
+            }
+        }
     }
 }
 

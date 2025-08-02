@@ -31,4 +31,5 @@ enum StoryDestination: String, Hashable {
     case nodeSombria2
     case nodeSombria3
     case nodeChat
+    case nodeCamera
 }

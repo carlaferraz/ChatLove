@@ -24,7 +24,13 @@ final class StoryManager: ObservableObject {
         .start: StoryNode(
             textBot: "Posso te ver? Só por um segundo… Prometo não piscar.",
             choices: [
-                Choice(textUser: "...Amor?", destination: .nodeTomRelacao),
+                Choice(textUser: "... ?", destination: .nodeCamera),
+            ]
+        ),
+        .nodeCamera: StoryNode(
+            textBot: "gostosa.",
+            choices: [
+                Choice(textUser: "eita bixo", destination: .nodeTomRelacao),
             ]
         ),
         .nodeTomRelacao: StoryNode(
@@ -98,49 +104,21 @@ final class StoryManager: ObservableObject {
         } else {
             currentGameState = .free
         }
-        
-        
-//        if tradedMessages % 3 == 0 {
-//            updateCurrentStoryNodeIfNeeded()
-//            currentGameState = .choice(storyNode: story[currentStoryNode!]!)
-//        } else {
-//            currentGameState = .free
-//        }
+    }
+    
+    func advanceStoryAfterPhoto(){
+        guard case .choice(let storyNode) = currentGameState else {
+                return
+            }
+        if let photoChoice = storyNode.choices.first(where: { $0.destination == StoryDestination.nodeCamera }){
+            increaseTradedMessages(choice: photoChoice)
+        }
     }
     
     private func updateCurrentStoryNodeIfNeeded(choice: Choice? = nil) {
-//        currentStoryNode = switch tradedMessages {
-//        case .start: .start
-//        case 4: .nodeTomRelacao
-//        case 5: .nodeConhecer
-//        case 6: .nodeRomance1
-//        case 7: .nodeSombria1
-//        case 8: .nodeRomance2
-//        case 9: .nodeSombria2
-//        case 10: .nodeRomance3
-//        case 11: .nodeSombria3
-//        default: nil
-//        }
         if let choice { currentStoryNode = choice.destination }
         else {
             currentStoryNode = .start
         }
-//        currentStoryNode = switch choice.destination {
-//        case .start: .nodeTomRelacao
-//        case .nodeTomRelacao: .nodeTomRelacao
-//        case .nodeConhecer: .nodeConhecer
-//        case .nodeRomance1: .nodeRomance1
-//        case .nodeSombria1: .nodeSombria1
-//        case .nodeRomance2: .nodeRomance2
-//        case .nodeSombria2: .nodeSombria2
-//        case .nodeRomance3: .nodeApagar
-////            currentGameState = .transitionTo(view: .romanceEnding)
-//        case .nodeSombria3:
-//            currentGameState = .transitionTo(view: .darkEnding)
-//        default:
-//            // aqui
-//            guard let nextNode = story[choice.destination] else { return }
-//            currentGameState = .choice(storyNode: nextNode)
-//        }
     }
 }

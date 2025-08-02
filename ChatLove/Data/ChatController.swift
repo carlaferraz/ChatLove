@@ -66,7 +66,16 @@ class ChatController: ObservableObject, @unchecked Sendable {
         return nil
     }
 
-    
+    func sendImageMessage(image: UIImage) {
+        let newMessage = Message(
+            id: UUID(),
+            content: "",
+            isUser: true,
+            image: image
+            
+        )
+        messages.append(newMessage)
+    }
     
     
     func sendNewMessage(content: String, predefinedAnswer: String? = nil) {
@@ -147,4 +156,5 @@ struct Message: Identifiable{
     var id: UUID = .init()
     var content: String
     var isUser: Bool
+    var image: UIImage?
 }

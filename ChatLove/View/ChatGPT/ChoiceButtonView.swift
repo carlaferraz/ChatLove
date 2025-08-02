@@ -16,6 +16,7 @@ struct ChoiceButtonView: View {
     
     @Binding var shouldGoToTerminalView: Bool
     @Binding var shouldGoToCallView: Bool
+    @Binding var showingCamera: Bool
     
     var body: some View {
         HStack {
@@ -41,6 +42,11 @@ struct ChoiceButtonView: View {
                 if choice.destination == .nodeChat {
                     storyManager.tradedMessages = -99 // gambiarra kkkka
                     storyManager.currentGameState = .free
+                    return
+                }
+                
+                if choice.destination == .nodeCamera{
+                    showingCamera = true
                     return
                 }
                 
