@@ -96,23 +96,23 @@ final class StoryManager: ObservableObject {
         }
     }
     
-    func advanceStoryAfterPhoto(chatController: ChatController){
-        guard case .choice(let storyNode) = currentGameState else {
-            return
-        }
-        if let photoChoice = storyNode.choices.first(where: { $0.destination == StoryDestination.nodeCamera }){
-            if let destinationNode = story[photoChoice.destination] {
-                
-                
-                chatController.sendNewMessage(
-                    content: photoChoice.textUser,
-                    predefinedAnswer: destinationNode.textBot
-                )
-                increaseTradedMessages(choice: photoChoice)
-            }
-            
-        }
-    }
+//    func advanceStoryAfterPhoto(chatController: ChatController){
+//        guard case .choice(let storyNode) = currentGameState else {
+//            return
+//        }
+//        if let photoChoice = storyNode.choices.first(where: { $0.destination == StoryDestination.nodeCamera }){
+//            if let destinationNode = story[photoChoice.destination] {
+//                
+//                
+//                chatController.sendNewMessage(
+//                    content: photoChoice.textUser,
+//                    predefinedAnswer: destinationNode.textBot
+//                )
+//                increaseTradedMessages(choice: photoChoice)
+//            }
+//            
+//        }
+//    }
     
     private func updateCurrentStoryNodeIfNeeded(choice: Choice? = nil) {
         if let choice { currentStoryNode = choice.destination }
