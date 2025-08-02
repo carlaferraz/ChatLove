@@ -15,9 +15,8 @@ struct Choice: Identifiable{
 
 struct StoryNode: Identifiable{
     let id = UUID()
-    let textBot: String
+    var textBot: String
     let choices: [Choice]
-    let textBotReply: String
 }
 
 enum StoryDestination: String, Hashable {
@@ -31,4 +30,5 @@ enum StoryDestination: String, Hashable {
     case nodeSombria1
     case nodeSombria2
     case nodeSombria3
+    case nodeChat
 }

@@ -13,6 +13,10 @@ struct TerminalView: View {
     @StateObject var chatController: ChatController = .init()
     
     @State var string: String = ""
+    
+    init(){
+        UINavigationBar.setAnimationsEnabled(false)
+    }
  
     var body: some View {
         VStack(alignment: .leading) {
@@ -24,16 +28,17 @@ struct TerminalView: View {
             }
             HStack{
                 TextField("Fale comigo, amor...", text: $string)
-                    .font(.system(.body, design: .monospaced))
+                    .font(.system(.caption, design: .monospaced))
                 Button{
                     chatController.sendNewMessage(content: string)
                     string = ""
                 } label: {
                     Text(">")
-                        .font(.system(.body, design: .monospaced))
+                        .font(.system(.caption, design: .monospaced))
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)
         .padding(.vertical, 40)
         .background(Color.black)

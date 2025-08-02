@@ -20,6 +20,12 @@ struct ContentView: View{
     
     @Environment(\.scenePhase) var scenePhase
     @State var selectedDate = Date()
+    
+    @State private var shouldGoToTerminalView = false
+    @State private var shouldGoToCallView = false
+    
+    
+    
     let notify = NotificationHandler()
     
     var focusedInput: some View {
@@ -146,30 +152,69 @@ struct ContentView: View{
                 // adicionar botoes pra escolhas
                 VStack {
                     ForEach(storyNode.choices) { choice in
-                        HStack{
-                            //ESCOLHAS DO USER
-                            Text(choice.textUser)
-                                .foregroundStyle(.white)
-                                .font(.system(size: 16))
-                                .fontWeight(.medium)
-                            Spacer()
-                            Button{
-                                //BOTOES ADICIONADOS!! <3
-                                chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
-                                
-                                chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
-                                
-                                storyManager.currentGameState = .free
-                            } label: {
-                                Image(systemName: "arrow.up")
-                                    .font(.system(size: 17))
-                                    .fontWeight(.bold)
-                                    .padding(10)
-                                    .foregroundStyle(.black)
-                                    .background(.white)
-                                    .cornerRadius(30)
-                            }
-                        }
+                        ChoiceButtonView(
+                            choice: choice,
+                            storyNode: storyNode,
+                            storyManager: storyManager,
+                            chatController: chatController,
+                            shouldGoToTerminalView: $shouldGoToTerminalView,
+                            shouldGoToCallView: $shouldGoToCallView
+                        )
+                        //                        HStack{
+                        //                            //ESCOLHAS DO USER
+                        //                            Text(choice.textUser)
+                        //                                .foregroundStyle(.white)
+                        //                                .font(.system(size: 16))
+                        //                                .fontWeight(.medium)
+                        //                            Spacer()
+                        //                            Button {
+                        //                                if choice.destination == .nodeRomance3 {
+                        //                                    shouldGoToTerminalView = true
+                        //                                    return
+                        //                                }
+                        //
+                        //                                if choice.destination == .nodeSombria3 {
+                        //                                    shouldGoToTerminalView = true
+                        //                                    return
+                        //                                }
+                        //
+                        //                                if choice.destination == .nodeRomance1 {
+                        //                                    shouldGoToCallView = true
+                        //                                    return
+                        //                                }
+                        //
+                        //                                if choice.destination == .nodeChat {
+                        //                                    storyManager.tradedMessages = -99 // gambiurra kkkka
+                        //                                    storyManager.currentGameState = .free
+                        //                                    return
+                        //                                }
+                        //
+                        //                                //BOTOES ADICIONADOS!! <3
+                        //                                chatController.messages.append(
+                        //                                    .init(content: storyNode.textBot, isUser: false)
+                        //                                )
+                        //
+                        //                                chatController.messages.append(
+                        //                                    .init(content: choice.textUser, isUser: true)
+                        //                                )
+                        //
+                        //                                chatController.messages.append(
+                        //                                    .init(content: storyNode.textBotReply, isUser: false)
+                        //                                )
+                        //
+                        //                                storyManager.increaseTradedMessages(choice: choice)
+                        //
+                        //                                //storyManager.currentGameState = .free
+                        //                            } label: {
+                        //                                Image(systemName: "arrow.up")
+                        //                                    .font(.system(size: 17))
+                        //                                    .fontWeight(.bold)
+                        //                                    .padding(10)
+                        //                                    .foregroundStyle(.black)
+                        //                                    .background(.white)
+                        //                                    .cornerRadius(30)
+                        //                            }
+                        //                        }
                         .padding(.vertical, 6)
                         .padding(.leading, 24)
                         .padding(.trailing, 10)
@@ -178,11 +223,11 @@ struct ContentView: View{
                         
                     }
                     
-//                    if isFocused {
-//                        focusedInput
-//                    } else {
-//                        unfocusedInput
-//                    }
+                    //                    if isFocused {
+                    //                        focusedInput
+                    //                    } else {
+                    //                        unfocusedInput
+                    //                    }
                 }
                 //USO LIVRE DO CHAT DOIDO AGUI
             case .free:
@@ -194,6 +239,7 @@ struct ContentView: View{
                 }
             }
         }
+        .ignoresSafeArea(.all)
         .padding(12)
         .navigationBarBackButtonHidden(true)
         .onChange(of: scenePhase) { _, newPhase in
@@ -211,48 +257,16 @@ struct ContentView: View{
             if newPhase == .active {
                 print("App ficou ativo")
             }
-            
         }
+        .navigationDestination(
+            isPresented: $shouldGoToTerminalView,
+            destination: { TerminalView() }
+        )
+        .navigationDestination(
+            isPresented: $shouldGoToCallView,
+            destination: { CallView() }
+        )
     }
 }
 
 
-struct MessageView: View{
-    var message: Message
-    var body: some View {
-        Group{
-            if message.isUser{
-                //user
-                HStack{
-                    Spacer()
-                    Text(message.content)
-                        .font(.system(size: 18))
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
-                        .background(.textFieldBox)
-                        .cornerRadius(30)
-                }
-            } else {
-                //bot
-                HStack{
-                    VStack(alignment: .leading, spacing: 21){
-                        Text(message.content)
-                            .font(.system(size: 19))
-                        HStack(spacing: 10){
-                            Image(systemName: "document.on.document")
-                            Image(systemName: "speaker.wave.2")
-                            Image(systemName: "hand.thumbsup")
-                            Image(systemName: "hand.thumbsdown")
-                            Image(systemName: "repeat")
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                        .font(.system(size: 17))
-                    }
-                    
-                    Spacer()
-                }
-            }
-        }
-    }
-}
