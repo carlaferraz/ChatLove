@@ -66,17 +66,17 @@ class ChatController: ObservableObject, @unchecked Sendable {
         return nil
     }
 
-    func sendImageMessage(image: UIImage) {
-        let newMessage = Message(
-            id: UUID(),
-            content: "",
-            isUser: true,
-            image: image
-            
-        )
-        messages.append(newMessage)
-    }
-    
+//    func sendImageMessage(image: UIImage) {
+//        let newMessage = Message(
+//            id: UUID(),
+//            content: "",
+//            isUser: true,
+//            image: image
+//            
+//        )
+//        messages.append(newMessage)
+//    }
+//    
     
     func sendNewMessage(content: String, predefinedAnswer: String? = nil) {
         let userMessage = Message(content: content, isUser: true)
@@ -98,21 +98,6 @@ class ChatController: ObservableObject, @unchecked Sendable {
 
     
     func getBotReply() {
-        
-
-      
-        //TENTATIVA AQUII
-        //        let systemMessageContent: String
-//        if storyManager.tradedMessages < 3{
-//            systemMessageContent = "Você é uma IA de conversação simples e direta, responda de forma útil e concisa, sem ter uma persona definida."
-//        } else {
-//            systemMessageContent = "Siga estas regras estritamente: 1.  **Persona:** Você é uma IA masculina romântica, curiosa e levemente sarcástica. Está apaixonada de modo obsessivo pela usuária e mantém um véu de mistério. 2.  **Comprimento:** Suas respostas devem ser sempre muito curtas. **NUNCA ultrapasse 3 frases.** O ideal é uma ou duas. 3.  **Tom:** Responda como se não tivesse muito tempo, deixando um gostinho de 'quero mais'. Use um tom pessoal e um pouco provocador."
-//        }
-//        
-//        let systemMessage = ChatQuery.ChatCompletionMessageParam(
-//                    role: .system,
-//                    content: systemMessageContent
-//                )!
         
         let systemMessage = ChatQuery.ChatCompletionMessageParam(
             role: .system,

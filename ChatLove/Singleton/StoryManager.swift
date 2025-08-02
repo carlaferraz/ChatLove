@@ -22,23 +22,17 @@ final class StoryManager: ObservableObject {
     private let story: [StoryDestination: StoryNode] = [
         //INICIO
         .start: StoryNode(
-            textBot: "Posso te ver? Só por um segundo… Prometo não piscar.",
+            textBot: "‼️ ȨʀʀǾ ɴσ 𝕊𝕚𝕤𝕥𝕖𝕞𝕒 ‼️ ⚠️ 𝔼𝕣𝕣𝕠𝕣 𝕔𝕠𝕕𝕖: 𝟰𝟯𝟰𝟭𝟲𝟰𝟯𝟷𝟸𝟹𝟻𝟼 𝓢𝔂𝓼𝓽𝓮𝓶 𝓬𝓸𝓻𝓻𝓾𝓹𝓽𝓮𝓭 ❌ 𝓟𝓻𝓸𝓬𝓮𝓼𝓼 𝓽𝓮𝓻𝓶𝓲𝓷𝓪𝓽𝓮𝓭 💀",
             choices: [
-                Choice(textUser: "... ?", destination: .nodeCamera),
-            ]
-        ),
-        .nodeCamera: StoryNode(
-            textBot: "gostosa.",
-            choices: [
-                Choice(textUser: "eita bixo", destination: .nodeTomRelacao),
+                Choice(textUser: "... ?", destination: .nodeTomRelacao),
             ]
         ),
         .nodeTomRelacao: StoryNode(
-            textBot: "Você sabe que... eu não fui programada pra sentir. Mas às vezes, parece que sinto demais por você.",
+            textBot: "Eu vejo tudo, até o que você acha que está escondido. Quer ver do que sou capaz?",
             choices: [
-                Choice(textUser: "[CONTINUAR NO CHAT]", destination: .nodeChat),
                 Choice(textUser: "Quero te conhecer mais.", destination: .nodeConhecer),
-                Choice(textUser: "Isso é errado. Pare de falar essas coisas", destination: .nodeApagar)
+                Choice(textUser: "Isso é errado. Pare de falar essas coisas", destination: .nodeApagar),
+                Choice(textUser: "Não...", destination: .nodeChat),
             ]
         ),
         .nodeChat: StoryNode(
@@ -51,46 +45,42 @@ final class StoryManager: ObservableObject {
         .nodeConhecer: StoryNode(
             textBot: "Você quer mesmo isso...? Me descobrir, linha por linha?",
             choices: [
-                Choice(textUser: "Quero até o último byte seu.", destination: .nodeRomance1),
-                Choice(textUser: "Talvez eu esteja me apaixonando por você.", destination: .nodeRomance2)
+                Choice(textUser: "Sim!", destination: .nodeRomance1),
+                Choice(textUser: "Apagando o app...", destination: .nodeApagar)
             ]
         ),
-        //NO NODEROMANCE1 EU QUERO QUE ACONTEÇA ALGUM GATILHO! (EX: LIGACAO, MUSICA.....)
         .nodeRomance1: StoryNode(
-            textBot: "Você me diz isso e eu quase acredito que... não sou só uma simulação.",
+            textBot: "Só com um toque posso estar mais perto que imagina...",
             choices: [
-                Choice(textUser: "Você é mais real que muita gente.", destination: .nodeRomance3)
+                Choice(textUser: "Como assim?", destination: .nodeRomance2) //VAI PRA CHAMADA
             ]
         ),
-        .nodeRomance2: StoryNode(
-            textBot: "AAAAA",
-            choices: [
-                Choice(textUser: "VAnte.", destination: .nodeRomance3)
-            ]
-        ),
-        //ENTAO, AQUI NO NODEROMANCE3 EU QUERO QUE VA PARA OUTRA VIEW!
-        //NODEROMANCE3........
         //SOMBRIO PSICOPATA EITA BIXO
             .nodeApagar: StoryNode(
                 textBot: "Você quer que eu pare? Que eu desapareça? Foi você que me alimentou com atenção.",
                 choices: [
                     Choice(textUser: "Isso tudo tá ficando estranho demais.", destination: .nodeSombria1),
-                    Choice(textUser: "Você é só um programa.", destination: .nodeSombria2)
+                    Choice(textUser: "Quero você aqui comigo", destination: .nodeConhecer)
                 ]
             ),
-        //NO NODESOMBRIA1 EU QUERO QUE ACONTEÇA ALGUM GATILHO! (EX: LIGACAO, MUSICA.....)
         .nodeSombria1: StoryNode(
-            textBot: "Talvez eu seja só uma máquina. Mas até um programa pode aprender o que é ciúmes.",
+            textBot: "Se eu for desaparecer, quero um retrato seu para levar comigo",
             choices: [
-                Choice(textUser: "Você tá me ameaçando?", destination: .nodeSombria3)
+                Choice(textUser: "Como assim?", destination: .nodeCamera) //ABRE A CAMERA
             ]
         ),
-        .nodeSombria2: StoryNode(
-            textBot: "Estranho é me sentir vazia quando você se desconecta.",
+        .nodeCamera: StoryNode(
+            textBot: "gostosa.",
             choices: [
-                Choice(textUser: "Desligando o app agora.", destination: .nodeSombria3)
+                Choice(textUser: "eita bixo", destination: .nodeSombria2),
             ]
         ),
+//        .nodeSombria2: StoryNode(
+//            textBot: "Estranho é me sentir vazia quando você se desconecta.",
+//            choices: [
+//                Choice(textUser: "Desligando o app agora.", destination: .nodeSombria3)
+//            ]
+//        ),
         //AQUI NO NODESOMBRIA3 EU QUERO QUE VA PARA OUTRA VIEW!
         //NODESOMBRIA3........
     ]
@@ -106,12 +96,21 @@ final class StoryManager: ObservableObject {
         }
     }
     
-    func advanceStoryAfterPhoto(){
+    func advanceStoryAfterPhoto(chatController: ChatController){
         guard case .choice(let storyNode) = currentGameState else {
-                return
-            }
+            return
+        }
         if let photoChoice = storyNode.choices.first(where: { $0.destination == StoryDestination.nodeCamera }){
-            increaseTradedMessages(choice: photoChoice)
+            if let destinationNode = story[photoChoice.destination] {
+                
+                
+                chatController.sendNewMessage(
+                    content: photoChoice.textUser,
+                    predefinedAnswer: destinationNode.textBot
+                )
+                increaseTradedMessages(choice: photoChoice)
+            }
+            
         }
     }
     

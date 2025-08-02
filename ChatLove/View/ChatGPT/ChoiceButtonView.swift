@@ -29,13 +29,17 @@ struct ChoiceButtonView: View {
             Spacer()
             
             Button {
-                if choice.destination == .nodeRomance3 || choice.destination == .nodeSombria3 {
-                    shouldGoToTerminalView = true
+//                if choice.destination == .nodeRomance3 || choice.destination == .nodeSombria3 {
+//                    shouldGoToTerminalView = true
+//                    return
+//                }
+                if choice.destination == .nodeRomance2 {
+                    shouldGoToCallView = true
                     return
                 }
                 
-                if choice.destination == .nodeRomance1 {
-                    shouldGoToCallView = true
+                if choice.destination == .nodeSombria2 {
+                    shouldGoToTerminalView = true
                     return
                 }
                 
@@ -50,7 +54,6 @@ struct ChoiceButtonView: View {
                     return
                 }
                 
-                // BOTOES ADICIONADOS!! <3
                 chatController.messages.append(
                     .init(content: storyNode.textBot, isUser: false)
                 )

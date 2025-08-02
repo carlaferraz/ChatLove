@@ -142,13 +142,18 @@ struct CallViewAccepted: View {
                     Spacer()
                     
                     VStack(spacing: 8){
-                        VStack{
-                            Image(systemName: "phone.down.fill")
-                                .font(.system(size: 28))
+                        
+                        NavigationLink(destination: AfterCallView()){
+                            VStack{
+                                Image(systemName: "phone.down.fill")
+                                    .font(.system(size: 28))
+                            }
+                            .frame(width: 76, height: 76)
+                            .background(.red)
+                            .cornerRadius(100)
                         }
-                        .frame(width: 76, height: 76)
-                        .background(.red)
-                        .cornerRadius(100)
+                        
+
                     }
 
                 }
