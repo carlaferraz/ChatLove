@@ -15,6 +15,7 @@ struct ChoiceButtonView: View {
     @ObservedObject var chatController: ChatController
     
     @Binding var shouldGoToTerminalView: Bool
+    @Binding var shouldGoToAfterPhotoView: Bool
     @Binding var shouldGoToCallView: Bool
     @Binding var showingCamera: Bool
     
@@ -39,7 +40,7 @@ struct ChoiceButtonView: View {
                 }
                 
                 if choice.destination == .nodeSombria2 {
-                    shouldGoToTerminalView = true
+                    shouldGoToAfterPhotoView = true
                     return
                 }
                 
@@ -55,11 +56,17 @@ struct ChoiceButtonView: View {
                 }
                 
                 chatController.messages.append(
-                    .init(content: storyNode.textBot, isUser: false)
+                    .init(content: choice.textUser, isUser: true, showoptions: false)
                 )
                 
                 chatController.messages.append(
-                    .init(content: choice.textUser, isUser: true)
+                    .init(content: storyNode.textBot, isUser: false, showoptions: false)
+                )
+                
+
+                
+                chatController.messages.append(
+                    .init(content: storyNode.textBotReply, isUser: false, showoptions: true)
                 )
                 
                 storyManager.increaseTradedMessages(choice: choice)

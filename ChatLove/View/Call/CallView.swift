@@ -75,7 +75,7 @@ struct CallView: View {
                        
                             HStack{
                                 VStack(spacing: 8){
-                                    NavigationLink(destination: CallViewAccepted()){
+                                    NavigationLink(destination: AfterCallView()){
                                         VStack{
                                             Image(systemName: "phone.down.fill")
                                                 .font(.system(size: 28))

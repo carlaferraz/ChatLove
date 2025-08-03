@@ -71,7 +71,8 @@ class ChatController: ObservableObject, @unchecked Sendable {
             id: UUID(),
             content: "",
             isUser: true,
-            image: image
+            image: image,
+            showoptions: false
             
         )
         messages.append(newMessage)
@@ -79,17 +80,17 @@ class ChatController: ObservableObject, @unchecked Sendable {
     
     
     func sendNewMessage(content: String, predefinedAnswer: String? = nil) {
-        let userMessage = Message(content: content, isUser: true)
+        let userMessage = Message(content: content, isUser: true, showoptions: false)
         self.messages.append(userMessage)
         
         if let commandResponse = respondToCommand(content) {
-            let response = Message(content: commandResponse, isUser: false)
+            let response = Message(content: commandResponse, isUser: false, showoptions: true)
             messages.append(response)
             return
         }
         
         if let predefinedAnswer {
-            messages.append(Message(content: predefinedAnswer, isUser: false))
+            messages.append(Message(content: predefinedAnswer, isUser: false, showoptions: false))
             return
         }
         
@@ -127,7 +128,7 @@ class ChatController: ObservableObject, @unchecked Sendable {
                 }
                 guard let message = choice.message.content else { return }
                 DispatchQueue.main.async {
-                    self.messages.append(Message(content: message, isUser: false))
+                    self.messages.append(Message(content: message, isUser: false, showoptions: true))
                 }
             case .failure(let failure):
                 print(failure)
@@ -142,4 +143,5 @@ struct Message: Identifiable{
     var content: String
     var isUser: Bool
     var image: UIImage?
+    var showoptions: Bool
 }

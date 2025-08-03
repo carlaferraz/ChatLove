@@ -44,6 +44,9 @@ struct TerminalView: View {
         .background(Color.black)
         .foregroundColor(.green)
         .font(.system(.caption, design: .monospaced))
+        .onAppear(){
+            SoundManager.instance.playSound(sound: .computer)
+        }
     }
 }
 

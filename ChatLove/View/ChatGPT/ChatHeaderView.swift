@@ -19,6 +19,6 @@ struct ChatHeaderView: View{
         }
         .font(.system(size: 20))
         .fontWeight(.bold)
-        .padding(.bottom, 50)
+        .padding(.bottom, 20)
     }
 }

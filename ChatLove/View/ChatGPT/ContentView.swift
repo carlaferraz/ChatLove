@@ -24,6 +24,7 @@ struct ContentView: View{
     
     @State private var shouldGoToTerminalView = false
     @State private var shouldGoToCallView = false
+    @State private var shouldGoToAfterPhotoView = false
     
     @State private var showingCamera = false //controla a camera
     @State private var selectedItem: PhotosPickerItem?
@@ -147,8 +148,10 @@ struct ContentView: View{
                             storyManager: storyManager,
                             chatController: chatController,
                             shouldGoToTerminalView: $shouldGoToTerminalView,
+                            shouldGoToAfterPhotoView: $shouldGoToAfterPhotoView,
                             shouldGoToCallView: $shouldGoToCallView,
                             showingCamera: $showingCamera
+                            
                         )
                         .padding(.vertical, 6)
                         .padding(.leading, 24)
@@ -195,6 +198,11 @@ struct ContentView: View{
             isPresented: $shouldGoToCallView,
             destination: { CallView() }
         )
+        .navigationDestination(
+            isPresented: $shouldGoToAfterPhotoView,
+            destination: { AfterPhotoView() }
+        )
+        
         
         .sheet(isPresented: $showingCamera){
             CameraView(image: $selectedImage)

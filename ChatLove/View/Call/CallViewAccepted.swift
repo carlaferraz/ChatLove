@@ -147,6 +147,7 @@ struct CallViewAccepted: View {
                             VStack{
                                 Image(systemName: "phone.down.fill")
                                     .font(.system(size: 28))
+                                    .foregroundStyle(.white)
                             }
                             .frame(width: 76, height: 76)
                             .background(.red)
