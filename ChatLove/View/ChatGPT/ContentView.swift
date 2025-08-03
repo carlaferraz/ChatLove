@@ -202,12 +202,7 @@ struct ContentView: View{
 //        
         .onChange(of: selectedImage) { _, newImage in
             if let newImage = newImage{
-                chatController.sendImageMessage(image: newImage)
-                
                 storyManager.advanceStoryAfterPhoto(chatController: chatController)
-                
-                selectedImage = nil
-                selectedItem = nil
             }
         }
     }

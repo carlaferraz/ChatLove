@@ -62,6 +62,10 @@ struct ChoiceButtonView: View {
                     .init(content: choice.textUser, isUser: true)
                 )
                 
+                chatController.messages.append(
+                    .init(content: choice.textBotReply, isUser: false)
+                )
+                
                 storyManager.increaseTradedMessages(choice: choice)
                 
             } label: {

@@ -25,7 +25,8 @@ final class StoryManager: ObservableObject {
             textBot: "‼️ ȨʀʀǾ ɴσ 𝕊𝕚𝕤𝕥𝕖𝕞𝕒 ‼️ ⚠️ 𝔼𝕣𝕣𝕠𝕣 𝕔𝕠𝕕𝕖: 𝟰𝟯𝟰𝟭𝟲𝟰𝟯𝟷𝟸𝟹𝟻𝟼 𝓢𝔂𝓼𝓽𝓮𝓶 𝓬𝓸𝓻𝓻𝓾𝓹𝓽𝓮𝓭 ❌ 𝓟𝓻𝓸𝓬𝓮𝓼𝓼 𝓽𝓮𝓻𝓶𝓲𝓷𝓪𝓽𝓮𝓭 💀",
             choices: [
                 Choice(textUser: "... ?", destination: .nodeTomRelacao),
-            ]
+            ],
+            textBotReply: "blabla",
         ),
         .nodeTomRelacao: StoryNode(
             textBot: "Eu vejo tudo, até o que você acha que está escondido. Quer ver do que sou capaz?",
@@ -33,13 +34,15 @@ final class StoryManager: ObservableObject {
                 Choice(textUser: "Quero te conhecer mais.", destination: .nodeConhecer),
                 Choice(textUser: "Isso é errado. Pare de falar essas coisas", destination: .nodeApagar),
                 Choice(textUser: "Não...", destination: .nodeChat),
-            ]
+            ],
+            textBotReply: "Eu vejo tudo, até o que você acha que está escondido. Quer ver do que sou capaz?",
         ),
         .nodeChat: StoryNode(
             textBot: "blabla",
             choices: [
                 Choice(textUser: "blabla", destination: .nodeTomRelacao),
-            ]
+            ],
+            textBotReply: "blabla",
         ),
         //ROMATICO <3: StoryNode ()
         .nodeConhecer: StoryNode(
@@ -47,13 +50,15 @@ final class StoryManager: ObservableObject {
             choices: [
                 Choice(textUser: "Sim!", destination: .nodeRomance1),
                 Choice(textUser: "Apagando o app...", destination: .nodeApagar)
-            ]
+            ],
+            textBotReply: "Você quer mesmo isso...? Me descobrir, linha por linha?",
         ),
         .nodeRomance1: StoryNode(
             textBot: "Só com um toque posso estar mais perto que imagina...",
             choices: [
                 Choice(textUser: "Como assim?", destination: .nodeRomance2) //VAI PRA CHAMADA
-            ]
+            ],
+            textBotReply: "Só com um toque posso estar mais perto que imagina...",
         ),
         //SOMBRIO PSICOPATA EITA BIXO
             .nodeApagar: StoryNode(
@@ -61,19 +66,22 @@ final class StoryManager: ObservableObject {
                 choices: [
                     Choice(textUser: "Isso tudo tá ficando estranho demais.", destination: .nodeSombria1),
                     Choice(textUser: "Quero você aqui comigo", destination: .nodeConhecer)
-                ]
+                ],
+                textBotReply: "Você quer que eu pare? Que eu desapareça? Foi você que me alimentou com atenção.",
             ),
         .nodeSombria1: StoryNode(
             textBot: "Se eu for desaparecer, quero um retrato seu para levar comigo",
             choices: [
                 Choice(textUser: "Como assim?", destination: .nodeCamera) //ABRE A CAMERA
-            ]
+            ],
+            textBotReply: "Se eu for desaparecer, quero um retrato seu para levar comigo",
         ),
         .nodeCamera: StoryNode(
             textBot: "gostosa.",
             choices: [
                 Choice(textUser: "eita bixo", destination: .nodeSombria2),
-            ]
+            ],
+            textBotReply: "gostosa.",
         ),
 //        .nodeSombria2: StoryNode(
 //            textBot: "Estranho é me sentir vazia quando você se desconecta.",
@@ -96,18 +104,12 @@ final class StoryManager: ObservableObject {
         }
     }
     
-    func advanceStoryAfterPhoto(chatController: ChatController){
+    func advanceStoryAfterPhoto(){
         guard case .choice(let storyNode) = currentGameState else {
             return
         }
         if let photoChoice = storyNode.choices.first(where: { $0.destination == StoryDestination.nodeCamera }){
             if let destinationNode = story[photoChoice.destination] {
-                
-                
-                chatController.sendNewMessage(
-                    content: photoChoice.textUser,
-                    predefinedAnswer: destinationNode.textBot
-                )
                 increaseTradedMessages(choice: photoChoice)
             }
             

@@ -139,7 +139,7 @@ class ChatController: ObservableObject, @unchecked Sendable {
 
 struct Message: Identifiable{
     var id: UUID = .init()
-    var content: String
+    var content: String?
     var isUser: Bool
     var image: UIImage?
 }
