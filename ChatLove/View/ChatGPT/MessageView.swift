@@ -10,16 +10,16 @@ struct MessageView: View {
             }
 
             VStack(alignment: .leading) {
-//                if let image = message.image {
-//                    Image(uiImage: image)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .cornerRadius(15)
-//                        .padding(5)
-//                        .background(message.isUser ? Color("textFieldBox") : Color.gray.opacity(0.2))
-//                        .cornerRadius(20)
-//
-//                } else {
+                if let image = message.image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                        .cornerRadius(15)
+                        .padding(5)
+                        .background(message.isUser ? Color("textFieldBox") : Color.gray.opacity(0.2))
+                        .cornerRadius(20)
+
+                } else {
                     if message.isUser {
                         // TEXTO DO USUÁRIO
                         Text(message.content)
@@ -45,7 +45,7 @@ struct MessageView: View {
                         }
                         .padding()
                     }
-//                }
+                }
             }
 
             if !message.isUser {

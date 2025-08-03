@@ -15,7 +15,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		8ABF80292E3E9580006B7C20 /* Exceptions for "chatlove" folder in "chatlove" target */ = {
+		8ABF80A02E3ECE0A006B7C20 /* Exceptions for "chatlove" folder in "chatlove" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -28,7 +28,7 @@
 		8A6BE38A2E3AA49400664D21 /* chatlove */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				8ABF80292E3E9580006B7C20 /* Exceptions for "chatlove" folder in "chatlove" target */,
+				8ABF80A02E3ECE0A006B7C20 /* Exceptions for "chatlove" folder in "chatlove" target */,
 			);
 			path = chatlove;
 			sourceTree = "<group>";
@@ -278,8 +278,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatlove/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ChatLove;
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos to add to our app";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photos to add them to our app";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We need to use your gallery photos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos of you to use in our app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -311,8 +311,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = chatlove/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ChatLove;
-				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos to add to our app";
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We need to access your photos to add them to our app";
+				INFOPLIST_KEY_NSAppleMusicUsageDescription = "We need to use your gallery photos";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to take photos of you to use in our app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

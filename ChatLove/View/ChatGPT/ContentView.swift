@@ -196,20 +196,20 @@ struct ContentView: View{
             destination: { CallView() }
         )
         
-//        .sheet(isPresented: $showingCamera){
-//            CameraView(image: $selectedImage)
-//        }
-////        
-//        .onChange(of: selectedImage) { _, newImage in
-//            if let newImage = newImage{
-//                chatController.sendImageMessage(image: newImage)
-//                
-//                storyManager.advanceStoryAfterPhoto(chatController: chatController)
-//                
-//                selectedImage = nil
-//                selectedItem = nil
-//            }
-//        }
+        .sheet(isPresented: $showingCamera){
+            CameraView(image: $selectedImage)
+        }
+//        
+        .onChange(of: selectedImage) { _, newImage in
+            if let newImage = newImage{
+                chatController.sendImageMessage(image: newImage)
+                
+                storyManager.advanceStoryAfterPhoto(chatController: chatController)
+                
+                selectedImage = nil
+                selectedItem = nil
+            }
+        }
     }
 }
 
