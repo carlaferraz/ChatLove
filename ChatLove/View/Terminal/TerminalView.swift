@@ -26,17 +26,20 @@ struct TerminalView: View {
                     MessageTerminalView(messageTerminal: message)
                 }
             }
-            HStack{
-                TextField("Fale comigo, amor...", text: $string)
-                    .font(.system(.caption, design: .monospaced))
-                Button{
-                    chatController.sendNewMessage(content: string)
-                    string = ""
-                } label: {
-                    Text(">")
+            if !chatController.isGameOver{
+                HStack{
+                    TextField("Fale comigo, amor...", text: $string)
                         .font(.system(.caption, design: .monospaced))
+                    Button{
+                        chatController.sendNewMessage(content: string)
+                        string = ""
+                    } label: {
+                        Text(">")
+                            .font(.system(.caption, design: .monospaced))
+                    }
                 }
             }
+
         }
         .navigationBarBackButtonHidden(true)
         .padding(.horizontal, 20)

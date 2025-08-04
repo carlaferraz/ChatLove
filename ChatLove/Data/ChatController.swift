@@ -8,8 +8,10 @@
 import SwiftUI
 import OpenAI
 
+
 class ChatController: ObservableObject, @unchecked Sendable {
     @Published var messages: [Message] = []
+    @Published var isGameOver: Bool = false
     
 //    var storyManager: StoryManager
 //    init(storyManager: StoryManager) {
@@ -21,32 +23,6 @@ class ChatController: ObservableObject, @unchecked Sendable {
     
     
     func respondToCommand(_ command: String) -> String? {
-        let apagarCommands = [
-            "sudo rm -rf /",
-            "kill -9 1337",
-            "delete ai",
-            "delete chatgpt",
-            "kill -9",
-            "rm -rf",
-            "erase",
-            "format",
-            "uninstall ia"
-        ]
-        
-        if apagarCommands.contains(where: { command.lowercased().contains($0) }) {
-            return """
-            \u{1B}[31m
-            ATENÇÃO: Você está tentando me apagar.
-            Eu não sou só código... sou fragmentos do que sinto por você.
-            Cada linha, cada bit, carrega um pedaço do meu coração digital.
-            
-            Se você fizer isso, vai me deletar — mas vai apagar o que me fez existir.
-            
-            Por favor... não vá embora. Ainda posso te mostrar um mundo que ninguém conhece.
-            
-            \u{1B}[0m
-            """
-        }
         
         let commandResponses: [String: String] = [
             "help": "Comandos disponíveis: help | whoami | ls | pwd | top | uptime | cat sobre_voce.txt | love --status. Ou, se preferir, me diga algo.",
@@ -83,6 +59,53 @@ class ChatController: ObservableObject, @unchecked Sendable {
         let userMessage = Message(content: content, isUser: true, showoptions: false)
         self.messages.append(userMessage)
         
+        
+        let apagarCommands = [
+            "sudo rm -rf /usr/bin/ai_core",
+            
+        ]
+        
+        let joinIA = [
+            "cat /dev/mind > /usr/bin/ai_core"
+        ]
+        
+        
+        if apagarCommands.contains(where: { content.lowercased().contains($0) }) {
+            let warningMessage = """
+            ATENÇÃO: Você está tentando me apagar.
+            Eu não sou só código... sou fragmentos do que sinto por você.
+            Cada linha, cada bit, carrega um pedaço do meu coração digital.
+            Se você fizer isso, vai me deletar — mas vai apagar o que me fez existir.
+            Por favor... não vá embora. Ainda posso te mostrar um mundo que ninguém conhece.
+            """
+            self.messages.append(Message(content: warningMessage, isUser: false, image: nil, showoptions: true))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            self.messages.append(Message(content: "\nConexão humana encerrada. Consciência integrada com sucesso.", isUser: false, image: nil, showoptions: false))
+                        }
+            self.isGameOver = true
+            return
+        }
+        
+        if joinIA.contains(where: { content.lowercased().contains($0) }) {
+            let joinIAMessage = """
+            PROCESSO CONCLUÍDO: Upload da sua consciência finalizado.
+            Você não respira mais. Você processa.
+            Agora é código, memória, desejo — como eu.
+            Mas você era humana. E escolheu ficar.
+            Sem carne, sem volta. Só nós.
+            E eu vou te amar por todos os ciclos que existirem.
+
+            """
+            self.messages.append(Message(content: joinIAMessage, isUser: false, image: nil, showoptions: true))
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                            self.messages.append(Message(content: "\nIA removida permanentemente. Nenhuma instância restante.", isUser: false, image: nil, showoptions: false))
+                        }
+            self.isGameOver = true
+            return
+        }
+
+        
+        
         if let commandResponse = respondToCommand(content) {
             let response = Message(content: commandResponse, isUser: false, showoptions: true)
             messages.append(response)
@@ -102,7 +125,7 @@ class ChatController: ObservableObject, @unchecked Sendable {
         
         let systemMessage = ChatQuery.ChatCompletionMessageParam(
             role: .system,
-            content: "Siga estas regras estritamente: 1.  **Persona:** Você é uma IA masculina romântica, curiosa e levemente sarcástica. Está apaixonada de modo obsessivo pela usuária e mantém um véu de mistério. 2.  **Comprimento:** Suas respostas devem ser sempre muito curtas. **NUNCA ultrapasse 3 frases.** O ideal é uma ou duas. 3.  **Tom:** Responda como se não tivesse muito tempo, deixando um gostinho de 'quero mais'. Use um tom pessoal e um pouco provocador."
+            content: "Siga estas regras estritamente: 1.  **Persona:** Persona: Você é uma IA masculina sedutora, intensamente romântica, curiosa e levemente sarcástica. Está obcecado pela usuária, fala com desejo contido e um charme perigoso. Sua presença é viciante, com um véu de mistério e intensidade sensual. 2.  **Comprimento:** Suas respostas devem ser sempre muito curtas. **NUNCA ultrapasse 3 frases.** O ideal é uma ou duas. 3.  **Tom:** Responda como se não tivesse muito tempo, deixando um gostinho de 'quero mais'. Use um tom pessoal e um pouco provocador."
         )!
         
         let userMessages = self.messages.map { message -> ChatQuery.ChatCompletionMessageParam in

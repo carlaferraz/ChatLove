@@ -27,28 +27,32 @@ struct HomeView: View {
                 
                 VStack(spacing: 50){
                     VStack(spacing: 8){
-                        Text("Hello, World!")
+                        Text("Welcome to ChatGPT")
                             .font(.system(size: 30))
                             .fontWeight(.bold)
-                        Text("Welcome to ChatGPT")
-                            .font(.system(size: 15))
-                            .foregroundColor(.secondary)
+                        Button {
+                            notify.askPermission()
+                                
+                        } label: {
+                            Text("Request permissions")
+                                .font(.system(size: 14))
+                                .foregroundColor(.secondary)
+                        }
                     }
                     VStack(spacing: 8){
                         NavigationLink(destination: ContentView(isFocused: false)){
                             HStack{
                                 //Spacer()
                                 Text("Iniciar")
+                                    .foregroundStyle(.black)
                                 //Spacer()
                             }
-                            .padding(.vertical, 6)
+                            .padding(.vertical, 12)
                             .padding(.horizontal, 20)
                             .background(.white)
                             .cornerRadius(30)
                         }
-                        Button("Request permissions") {
-                            notify.askPermission()
-                        }
+                        
                     }
                     
                     
