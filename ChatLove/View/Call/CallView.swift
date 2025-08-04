@@ -75,7 +75,7 @@ struct CallView: View {
                        
                             HStack{
                                 VStack(spacing: 8){
-                                    NavigationLink(destination: CallViewAccepted()){
+                                    NavigationLink(destination: AfterCallView()){
                                         VStack{
                                             Image(systemName: "phone.down.fill")
                                                 .font(.system(size: 28))
@@ -84,7 +84,7 @@ struct CallView: View {
                                         .frame(width: 76, height: 76)
                                         .background(.red)
                                         .cornerRadius(100)
-                                    }
+                                    }.transition(.opacity)
                                     Text("Decline")
                                         .foregroundStyle(.text)
                                         .font(.system(size: 14))
@@ -101,16 +101,16 @@ struct CallView: View {
                                         .background(.green)
                                         .cornerRadius(100)
                                     }
+                                    
                                     Text("Accept")
                                         .foregroundStyle(.text)
                                         .font(.system(size: 14))
                                 }
                             }
-                        
-
                     }
                     .padding(30)
                 }
+                .navigationBarBackButtonHidden(true)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 74)
                 .onAppear {

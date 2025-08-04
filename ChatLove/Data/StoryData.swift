@@ -15,15 +15,22 @@ struct Choice: Identifiable{
 
 struct StoryNode: Identifiable{
     let id = UUID()
-    let textBot: String
+    var textBot: String
     let choices: [Choice]
     let textBotReply: String
 }
 
 enum StoryDestination: String, Hashable {
     case start
-    case node1
-    case node2
-    case node3
-    case node4
+    case nodeTomRelacao
+    case nodeConhecer
+    case nodeRomance1
+    case nodeRomance2
+  
+    case nodeApagar
+    case nodeSombria1
+    case nodeSombria2
+
+    case nodeChat
+    case nodeCamera
 }

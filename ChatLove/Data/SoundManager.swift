@@ -14,6 +14,8 @@ class SoundManager{
     enum SoundOption: String{
         case calling = "calling"
         case voice = "vozChat"
+        case glitch = "glitch"
+        case computer = "computer"
     }
     
     func playSound(sound: SoundOption){

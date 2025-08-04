@@ -7,6 +7,7 @@
 
 import SwiftUI
 import OpenAI
+import PhotosUI
 
 struct ContentView: View{
     
@@ -20,6 +21,16 @@ struct ContentView: View{
     
     @Environment(\.scenePhase) var scenePhase
     @State var selectedDate = Date()
+    
+    @State private var shouldGoToTerminalView = false
+    @State private var shouldGoToCallView = false
+    @State private var shouldGoToAfterPhotoView = false
+    
+    @State private var showingCamera = false //controla a camera
+    @State private var selectedItem: PhotosPickerItem?
+    @State private var selectedImage: UIImage?
+    
+    
     let notify = NotificationHandler()
     
     var focusedInput: some View {
@@ -50,7 +61,6 @@ struct ContentView: View{
                     case .free:
                         chatController.sendNewMessage(content: string)
                     }
-                    
                     string = ""
                     isFocused = false
                 } label: {
@@ -118,27 +128,12 @@ struct ContentView: View{
     var body: some View {
         VStack{
             
-            //header
-            HStack{
-                Image(systemName: "text.alignleft")
-                Spacer()
-                Text("ChatGPT")
-                Spacer()
-                Image(systemName: "square.and.pencil")
-            }
-            .font(.system(size: 20))
-            .fontWeight(.bold)
-            .padding(.bottom, 50)
+            ChatHeaderView()
             Spacer()
             
             
             VStack(spacing: 35){
-                ScrollView {
-                    ForEach(chatController.messages) { message in
-                        MessageView(message: message)
-                            .padding(3)
-                    }
-                }
+                MessageListView(chatController: chatController)
             }
             
             switch storyManager.currentGameState {
@@ -147,30 +142,17 @@ struct ContentView: View{
                 // adicionar botoes pra escolhas
                 VStack {
                     ForEach(storyNode.choices) { choice in
-                        HStack{
-                            //ESCOLHAS DO USER
-                            Text(choice.textUser)
-                                .foregroundStyle(.white)
-                                .font(.system(size: 16))
-                                .fontWeight(.medium)
-                            Spacer()
-                            Button{
-                                //BOTOES ADICIONADOS!! <3
-                                chatController.messages.append(.init(content: storyNode.choices[0].textUser, isUser: true))
-                                
-                                chatController.messages.append(.init(content: storyNode.textBotReply, isUser: false))
-                                
-                                storyManager.currentGameState = .free
-                            } label: {
-                                Image(systemName: "arrow.up")
-                                    .font(.system(size: 17))
-                                    .fontWeight(.bold)
-                                    .padding(10)
-                                    .foregroundStyle(.black)
-                                    .background(.white)
-                                    .cornerRadius(30)
-                            }
-                        }
+                        ChoiceButtonView(
+                            choice: choice,
+                            storyNode: storyNode,
+                            storyManager: storyManager,
+                            chatController: chatController,
+                            shouldGoToTerminalView: $shouldGoToTerminalView,
+                            shouldGoToAfterPhotoView: $shouldGoToAfterPhotoView,
+                            shouldGoToCallView: $shouldGoToCallView,
+                            showingCamera: $showingCamera
+                            
+                        )
                         .padding(.vertical, 6)
                         .padding(.leading, 24)
                         .padding(.trailing, 10)
@@ -178,12 +160,6 @@ struct ContentView: View{
                         .cornerRadius(30)
                         
                     }
-                    
-//                    if isFocused {
-//                        focusedInput
-//                    } else {
-//                        unfocusedInput
-//                    }
                 }
                 //USO LIVRE DO CHAT DOIDO AGUI
             case .free:
@@ -195,6 +171,7 @@ struct ContentView: View{
                 }
             }
         }
+        .ignoresSafeArea(.all)
         .padding(12)
         .navigationBarBackButtonHidden(true)
         .onChange(of: scenePhase) { _, newPhase in
@@ -212,48 +189,36 @@ struct ContentView: View{
             if newPhase == .active {
                 print("App ficou ativo")
             }
-            
         }
-    }
-}
-
-
-struct MessageView: View{
-    var message: Message
-    var body: some View {
-        Group{
-            if message.isUser{
-                //user
-                HStack{
-                    Spacer()
-                    Text(message.content)
-                        .font(.system(size: 18))
-                        .fontWeight(.medium)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 16)
-                        .background(.textFieldBox)
-                        .cornerRadius(30)
-                }
-            } else {
-                //bot
-                HStack{
-                    VStack(alignment: .leading, spacing: 21){
-                        Text(message.content)
-                            .font(.system(size: 19))
-                        HStack(spacing: 10){
-                            Image(systemName: "document.on.document")
-                            Image(systemName: "speaker.wave.2")
-                            Image(systemName: "hand.thumbsup")
-                            Image(systemName: "hand.thumbsdown")
-                            Image(systemName: "repeat")
-                            Image(systemName: "square.and.arrow.up")
-                        }
-                        .font(.system(size: 17))
-                    }
-                    
-                    Spacer()
-                }
+        .navigationDestination(
+            isPresented: $shouldGoToTerminalView,
+            destination: { TerminalView() }
+        )
+        .navigationDestination(
+            isPresented: $shouldGoToCallView,
+            destination: { CallView() }
+        )
+        .navigationDestination(
+            isPresented: $shouldGoToAfterPhotoView,
+            destination: { AfterPhotoView() }
+        )
+        
+        
+        .sheet(isPresented: $showingCamera){
+            CameraView(image: $selectedImage)
+        }
+//        
+        .onChange(of: selectedImage) { _, newImage in
+            if let newImage = newImage{
+                chatController.sendImageMessage(image: newImage)
+                
+                storyManager.advanceStoryAfterPhoto(chatController: chatController)
+                
+                selectedImage = nil
+                selectedItem = nil
             }
         }
     }
 }
+
+
